@@ -16,7 +16,7 @@ namespace ofxAtem2
 		Controller() { init(); }
 		~Controller() { disconnect();  }
 
-		bool connect(string ip);
+		bool connect(string ip, int mix_effect_block_index = 0);
 		void reconnect();
 		void disconnect();
 		void update();

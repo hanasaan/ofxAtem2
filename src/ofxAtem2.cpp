@@ -682,7 +682,7 @@ namespace ofxAtem2
 		return wsdata;
 	}
 
-	bool Controller::connect(string ip)
+	bool Controller::connect(string ip, int mix_effect_block_index)
 	{
 		disconnect();
 		this->ip_ = ip;
@@ -743,13 +743,17 @@ namespace ofxAtem2
 				return false;
 			}
 
-			// Use the first Mix Effect Block
-			if (S_OK != iterator->Next(&mMixEffectBlock))
-			{
-				ofLogError() << "Could not get the first IBMDSwitcherMixEffectBlock";
-				if (iterator)
-					iterator->Release();
-				return false;
+			// Use the specified Mix Effect Block
+			int cnt = 0;
+			while (cnt <= mix_effect_block_index) {
+				if (S_OK != iterator->Next(&mMixEffectBlock))
+				{
+					ofLogError() << "Could not get the first IBMDSwitcherMixEffectBlock";
+					if (iterator)
+						iterator->Release();
+					return false;
+				}
+				cnt++;
 			}
 
 			mMixEffectBlock->AddCallback(mMixEffectBlockMonitor);
